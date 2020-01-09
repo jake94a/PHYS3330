@@ -1,3 +1,12 @@
+"""
+Description:
+Find the max common factor of two user-inputted numbers a and b
+Max factor is the largest number that each a and b are divisible by while the quotient returns an integer
+(It is possible to use a while loop here, but I elected not to)
+Example, 15 and 25 have a max common factor of 5 because 15/5=3 and 25/5=5, but any number larger than 5 returns decimals.
+"""
+
+
 import tkinter
 from tkinter import messagebox
 from tkinter import simpledialog
