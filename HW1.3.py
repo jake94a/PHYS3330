@@ -4,6 +4,15 @@ Find the max common factor of two user-inputted numbers a and b
 Max factor is the largest number that each a and b are divisible by while the quotient returns an integer
 (It is possible to use a while loop here, but I elected not to)
 Example, 15 and 25 have a max common factor of 5 because 15/5=3 and 25/5=5, but any number larger than 5 returns decimals.
+
+Function:
+Prompt user for two integer inputs, a and b
+Define strings to return to the user either with the answer or with an error
+if a > b then create a range from 1:a (inclusive)
+if a < b then create a range from 1:b (inclusive)
+if a = b then just return a (because the max common factor of n and n is n)
+Iterate through the created list and if the modulo of a/n and b/n is 0, then store n in a list
+Determine the max value in the stored list
 """
 
 
