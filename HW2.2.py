@@ -17,22 +17,35 @@ from tkinter import simpledialog
 from tkinter import messagebox
 
 
+def sub_divide(some_num):
+    my_list = list(range(some_num + 1))
+    mid_index = int(len(my_list) / 2)
+    mid_value = my_list[mid_index]
+    a_bool = messagebox.askyesno("Tell me your secrets", f'Is your number {mid_value}?')
+
+    while a_bool is False:
+        b_bool = messagebox.askyesno("Don't anger me", f'Is your number greater than {mid_value}?')
+        if b_bool:
+            del my_list[:mid_index]
+            mid_index = int(len(my_list) / 2)
+            mid_value = my_list[mid_index]
+            a_bool = messagebox.askyesno("Tell me your secrets", f'Is your number {mid_value}?')
+        else:
+            del my_list[mid_index:]
+            mid_index = int(len(my_list) / 2)
+            mid_value = my_list[mid_index]
+            a_bool = messagebox.askyesno("Tell me your secrets", f'Is your number {mid_value}?')
+    return mid_value
+
+
 def guess_the_number():
     root = tk.Tk()
     root.withdraw()
+    messagebox.showinfo("Instructions", "Let's play a game where I guess the number you're thinking of. I will only "
+                                        "guess numbers greater than or equal to 0.")
     n = simpledialog.askinteger("Input", "Input an upper range limit that your number falls within (from 0 to n)")
-    the_range = len(range(0, n))
-    half = int(the_range / 2)
-    answer = messagebox.askyesnocancel("Question", f'Is your number {half}?')
-    if answer:
-        my_string = f"I'm so glad we found your number at {half}!"
-        messagebox.showinfo("Answer", my_string)
-        return my_string
-    else:
-        while answer is False:
-            answer = messagebox.askyesnocancel("Question", f'Is your number greater than {half}?')
-            if answer:
-                half = int(half + (half / 2))
+    answer = sub_divide(n)
+    messagebox.showinfo("Answer", f"We found your number at {answer}! I'm so good at guessing!")
 
 
 if __name__ == "__main__":
