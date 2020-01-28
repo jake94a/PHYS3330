@@ -51,22 +51,32 @@ def transpose(some_array):
     return return_array
 
 
-def create_array(a_number, matrix_number):
+def create_array(matrix_size, matrix_number):
     # a_number is user input for the size of square matrix they want
     # define an empty list to append user-input values into
     return_array = []
     index_item = 0
     # for a square matrix, the size of the matrix must be iterated over twice
     # so a 2x2 matrix would be two "for i in range(2)" loops, one loop for each row
-    for j in range(a_number):
+    for j in range(matrix_size):
         # this row_list will reset when each column is filled completely
         row_list = []
-        for m in range(a_number):
+        for m in range(matrix_size):
             num_append = simpledialog.askinteger("Input", f'Input index [{j},{m}] for matrix number {matrix_number}')
+            # num_append = random.randint(0,100) # use this to create a matrix of random integers
             row_list.append(num_append)
             index_item += 1
         return_array.append(row_list)
     return return_array
+
+
+"""
+These next three lines would be used to create your first and second matrix in a way that makes it
+simple to return to the user
+matrix_one = create_array(n, num_arrays)
+matrix_two = create_array(n, num_arrays)
+tkinter.messagebox(title="Original Matrices", f'Your original matrices are {matrix_one} and {matrix_two})
+"""
 
 
 def zeroes_array(a_number):
