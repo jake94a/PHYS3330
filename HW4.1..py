@@ -15,3 +15,5 @@ def sin_cos():
     plt.title("hw4.1")
     plt.plot(x_num, my_func)
     plt.show()
+
+sin_cos()
