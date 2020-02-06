@@ -46,14 +46,22 @@ def cda(x_range, step):
     return cda_total
 
 
-#def scda
+def scda(x_range, step):
+    fx_plus_h = 2 * numpy.sin(3 * (x_range + step)) + numpy.cos(4 * (x_range + step))
+    fx_minus_h = 2 * numpy.sin(3 * (x_range - step)) + numpy.cos(4 * (x_range - step))
+    fx = 2 * numpy.sin(3 * x_range) + numpy.cos(4 * x_range)
+    scda_total = (fx_plus_h + fx_minus_h - 2 * fx) / (step**2)
+    return scda_total
 
 
 fda_plot = fda(x, h)
 bda_plot = bda(x, h)
 cda_plot = cda(x, h)
+scda_plot = scda(x, h)
 plt.plot(derivative_of_original())
 plt.plot(fda_plot)
 plt.plot(bda_plot)
 plt.plot(cda_plot)
+plt.plot(scda_plot)
+plt.figlegend(('True Derivative', 'FDA', 'BDA', 'CDA', 'SCDA'))
 plt.show()
