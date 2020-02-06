@@ -1,19 +1,17 @@
 """
 Description:
+Import all_the_things which contains the function we need
 
 Function:
-
+Import all_the_things and matplotlib.pyplot
+plot the sin_cos() function from all_the_things
+Give the title 'hw4.1'
+Show the plot
 """
-import numpy
+
+import all_the_things
 import matplotlib.pyplot as plt
 
-
-def sin_cos():
-    x_num = numpy.arange(0, 2 * numpy.pi, 0.01)
-    my_func = numpy.sin(2 * x_num) + numpy.cos(3 * x_num)
-
-    plt.title("hw4.1")
-    plt.plot(x_num, my_func)
-    plt.show()
-
-sin_cos()
+plt.plot(all_the_things.sin_cos())
+plt.title("hw4.1")
+plt.show()
