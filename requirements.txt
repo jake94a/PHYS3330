@@ -1,0 +1,6 @@
+sympy
+numpy
+matplotlib
+pip install Pillow
+pip install matplotlib
+pip install numpy
