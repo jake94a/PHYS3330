@@ -1,7 +1,51 @@
 import numpy
+import sympy
 import math
 import tkinter
 from tkinter import messagebox
+
+
+def ana_integration(lower, upper):
+    t = sympy.symbols('t')
+    velocity_trogdor = t * sympy.sin(t)
+    disp_trogdor = sympy.integrate(velocity_trogdor, (t, lower, upper))
+    return disp_trogdor.evalf()
+
+
+def right_riemann(step, lower, upper):
+    t_values_right = numpy.arange(lower + step, upper + step, step)
+    disp_trogdor_right = 0
+    for i in t_values_right:
+        disp_trogdor_right += (i * numpy.sin(i)) * step
+    return disp_trogdor_right
+
+
+def left_riemann(step, lower, upper):
+    t_values_left = numpy.arange(lower, upper, step)
+    disp_trogdor_left = 0
+    for i in t_values_left:
+        disp_trogdor_left += (i * numpy.sin(i)) * step
+    return disp_trogdor_left
+
+
+def midpoint(step, lower, upper):
+    t_values_mid = numpy.arange(lower, upper + step, step / 2)
+    disp_trogdor_mid = 0
+    for i in range(len(t_values_mid)):
+        if (i % 2) != 0:
+            disp_trogdor_mid += (t_values_mid[i] * numpy.sin(t_values_mid[i])) * step
+        else:
+            pass
+    return disp_trogdor_mid
+
+
+def trapezoidal(step, lower, upper):
+    t_values_trap = numpy.arange(lower, upper + step, step)
+    disp_trogdor_trap = 0
+    for i in t_values_trap:
+        f_values = ((i * numpy.sin(i)) + ((i + step) * numpy.sin(i + step))) / 2
+        disp_trogdor_trap += f_values * step
+    return disp_trogdor_trap
 
 
 def sbda(x_range, step, fnc, x):
