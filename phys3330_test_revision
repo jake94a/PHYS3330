@@ -1,0 +1,127 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def read_file(some_txt):
+    return_list = []
+    for i in some_txt:
+        return_list.append(float(i.strip()))
+    return return_list
+
+
+# import txt files
+hecka_wind = open("hecka_wind.txt", "r")
+little_wind = open("little_wind.txt", "r")
+lotta_wind = open("lotta_wind.txt", "r")
+mother_of = open("mother_of.txt", "r")
+noooooo = open("noooooo.txt", "r")
+son_of_a = open("son_of_a.txt", "r")
+list_of_files = [hecka_wind, little_wind, lotta_wind, mother_of, noooooo, son_of_a]
+list_of_files_strings = ['hecka_wind', 'little_wind', 'lotta_wind', 'mother_of', 'noooooo', 'son_of_a']
+
+# initial conditions
+mass_of_obj = 1  # kg
+initial_velocity = 50  # m/s
+angle_of_traj = 30 * np.pi / 180  # radians
+y_final = 0  # meters
+gravity = -9.8  # m/s**2
+t_step = 0.01  # seconds
+t_min = 0  # seconds
+t_max = 10  # seconds
+t_range = np.arange(t_min, t_max + t_step, t_step)
+y_velocity = initial_velocity * np.sin(angle_of_traj)
+x_velocity = initial_velocity * np.cos(angle_of_traj)
+
+# read the contents of the .txt files
+file_read_list = []
+for i in list_of_files:
+    file_read_list.append(read_file(i))
+
+"""
+Part 1
+Find total time that projectile is in air
+Find time to projectile arc, then *2 (for up, then down)
+v_f = v_0 + a * t
+
+Find x(t)
+v_x = d_x / t
+x_velocity is constant (no acceleration acting on it) ...(yet)
+
+Find y(t)
+d = v_0 * t + (1/2) * a * t**2
+"""
+
+total_arc_time = 2 * y_velocity / -gravity
+total_arc_time_list = np.arange(t_min, total_arc_time, t_step)
+
+x_distance = x_velocity * total_arc_time_list
+y_distance = y_velocity * total_arc_time_list + (1 / 2) * gravity * total_arc_time_list ** 2
+
+plt.plot(x_distance, y_distance)
+plt.figlegend([f'Max height = {max(y_distance)} \n Max distance = {x_distance[-1]}'])
+plt.show()
+
+"""
+Part 2
+Plot the trajectories if there is an x-force
+The x-forces are in the read-in files
+"""
+
+air_resistance_x_list = []
+for file in file_read_list:
+    new_list = []
+    index = 0
+    for time_iteration in total_arc_time_list:
+        new_list.append(x_velocity * time_iteration + (1 / 2) * file[index] * time_iteration ** 2)
+        index += 1
+    air_resistance_x_list.append(new_list)
+
+y_distance_new = y_distance[:len(total_arc_time_list)]
+for i in range(len(air_resistance_x_list)):
+    plt.plot(air_resistance_x_list[i], y_distance_new)
+
+plt.figlegend(list_of_files_strings)
+plt.show()
+
+"""
+Part 3
+Choose a text file to use
+"""
+
+def time_kinematic(y_vel_ini, const_acc, iteration_step):
+    return_time = 2 * (-y_vel_ini) / const_acc
+    return_time_list = list(np.arange(0, return_time, iteration_step))
+    return return_time_list
+
+
+def x_distances(list_of_time, v_initial, accel_list):
+    x_distance_list = []
+    for index in range(len(list_of_time)):
+        x_distance_list.append(v_initial * list_of_time[index] + (1 / 2) * accel_list[index] * list_of_time[index] ** 2)
+    return x_distance_list
+
+
+def y_distances(list_of_time, v_initial):
+    y_distances_list = []
+    for t in list_of_time:
+        y_distances_list.append(v_initial * t + (1 / 2) * (-9.8) * t ** 2)
+    return y_distances_list
+
+
+our_file = file_read_list[2]
+varying_velocities = [10, 20, 100, 200]
+y_velocity_part_three = []
+x_velocity_part_three = []
+
+for velocity in varying_velocities:
+    y_velocity_part_three.append(velocity * np.sin(angle_of_traj))
+    x_velocity_part_three.append(velocity * np.cos(angle_of_traj))
+
+for index in range(len(varying_velocities)):
+    new_list_of_time = time_kinematic(y_velocity_part_three[index], gravity, t_step)
+    new_list_of_x = x_distances(new_list_of_time, x_velocity_part_three[index], our_file[index])
+    new_list_of_y = y_distances(new_list_of_time, y_velocity_part_three[index])
+    plt.plot(new_list_of_x, new_list_of_y)
+
+plt.show()
+
