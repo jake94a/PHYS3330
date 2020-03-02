@@ -58,7 +58,10 @@ x_distance = x_velocity * total_arc_time_list
 y_distance = y_velocity * total_arc_time_list + (1 / 2) * gravity * total_arc_time_list ** 2
 
 plt.plot(x_distance, y_distance)
-plt.figlegend([f'Max height = {max(y_distance)} \n Max distance = {x_distance[-1]}'])
+plt.title("Part One")
+plt.xlabel("Distance (m)")
+plt.ylabel("Height (m)")
+plt.figlegend([f'Max height = {round(max(y_distance), 2)} \n Max distance = {round(x_distance[-1], 2)}'])
 plt.show()
 
 """
@@ -80,13 +83,22 @@ y_distance_new = y_distance[:len(total_arc_time_list)]
 for i in range(len(air_resistance_x_list)):
     plt.plot(air_resistance_x_list[i], y_distance_new)
 
+plt.title("Part Two")
+plt.xlabel("Distance (m)")
+plt.ylabel("Height (m)")
 plt.figlegend(list_of_files_strings)
 plt.show()
 
 """
-Part 3
+Part 3a
 Choose a text file to use
+Define a list of four new velocities
+Plot the trajectory of these four velocities w/ all the other values remaining the same as previous parts
+Since mass of object is 1kg, just assume force = acceleration
 """
+def x_y_distances(time_list, initial_v, list_of_v, list_of_angles):
+
+    
 
 def time_kinematic(y_vel_ini, const_acc, iteration_step):
     return_time = 2 * (-y_vel_ini) / const_acc
@@ -94,10 +106,10 @@ def time_kinematic(y_vel_ini, const_acc, iteration_step):
     return return_time_list
 
 
-def x_distances(list_of_time, v_initial, accel_list):
+def x_distances(list_of_time, v_initial, force):
     x_distance_list = []
-    for index in range(len(list_of_time)):
-        x_distance_list.append(v_initial * list_of_time[index] + (1 / 2) * accel_list[index] * list_of_time[index] ** 2)
+    for n in range(len(list_of_time)):
+        x_distance_list.append(v_initial * list_of_time[n] + (1 / 2) * force * list_of_time[n] ** 2)
     return x_distance_list
 
 
@@ -108,10 +120,13 @@ def y_distances(list_of_time, v_initial):
     return y_distances_list
 
 
-our_file = file_read_list[2]
+list_of_forces = file_read_list[2]
 varying_velocities = [10, 20, 100, 200]
 y_velocity_part_three = []
 x_velocity_part_three = []
+max_height_part_three = []
+max_distance_part_three = []
+fig_legend_list = []
 
 for velocity in varying_velocities:
     y_velocity_part_three.append(velocity * np.sin(angle_of_traj))
@@ -119,9 +134,28 @@ for velocity in varying_velocities:
 
 for index in range(len(varying_velocities)):
     new_list_of_time = time_kinematic(y_velocity_part_three[index], gravity, t_step)
-    new_list_of_x = x_distances(new_list_of_time, x_velocity_part_three[index], our_file[index])
+    new_list_of_x = x_distances(new_list_of_time, x_velocity_part_three[index], list_of_forces[index])
     new_list_of_y = y_distances(new_list_of_time, y_velocity_part_three[index])
+    max_distance_part_three.append(round(new_list_of_x[-1], 2))
+    max_height_part_three.append(round(max(new_list_of_y), 2))
     plt.plot(new_list_of_x, new_list_of_y)
 
+for num in range(len(varying_velocities)):
+    fig_legend_list.append(f'{varying_velocities[num]} m/s results in {max_distance_part_three[num]}m max distance and '
+                           f'{max_height_part_three[num]}m max height')
+
+plt.title("Part Three (a)")
+plt.xlabel("Distance (m)")
+plt.ylabel("Height (m)")
+plt.figlegend(fig_legend_list)
 plt.show()
 
+"""
+Part 3b
+Choose a text file to use (use the same from part 3a)
+Define a list of four new angles of trajectory
+Plot the trajectory of these four angles w/ all the other values remaining the same as previous parts
+Since mass of object is 1kg, just assume force = acceleration
+"""
+
+varying_angles = [10, 20, 45, 80]
