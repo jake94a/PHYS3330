@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def read_file(some_txt):
+def read_file(some_txt):  # define a fnc to read in text files as floats to manipulate later
     return_list = []
-    for i in some_txt:
-        return_list.append(float(i.strip()))
+    for line in some_txt:
+        return_list.append(float(line.strip()))
     return return_list
 
 
@@ -96,9 +96,7 @@ Define a list of four new velocities
 Plot the trajectory of these four velocities w/ all the other values remaining the same as previous parts
 Since mass of object is 1kg, just assume force = acceleration
 """
-def x_y_distances(time_list, initial_v, list_of_v, list_of_angles):
 
-    
 
 def time_kinematic(y_vel_ini, const_acc, iteration_step):
     return_time = 2 * (-y_vel_ini) / const_acc
@@ -109,7 +107,7 @@ def time_kinematic(y_vel_ini, const_acc, iteration_step):
 def x_distances(list_of_time, v_initial, force):
     x_distance_list = []
     for n in range(len(list_of_time)):
-        x_distance_list.append(v_initial * list_of_time[n] + (1 / 2) * force * list_of_time[n] ** 2)
+        x_distance_list.append(v_initial * list_of_time[n] + (1 / 2) * force[n] * list_of_time[n] ** 2)
     return x_distance_list
 
 
@@ -121,7 +119,7 @@ def y_distances(list_of_time, v_initial):
 
 
 list_of_forces = file_read_list[2]
-varying_velocities = [10, 20, 100, 200]
+varying_velocities = [10, 20, 30, 40]
 y_velocity_part_three = []
 x_velocity_part_three = []
 max_height_part_three = []
@@ -134,7 +132,7 @@ for velocity in varying_velocities:
 
 for index in range(len(varying_velocities)):
     new_list_of_time = time_kinematic(y_velocity_part_three[index], gravity, t_step)
-    new_list_of_x = x_distances(new_list_of_time, x_velocity_part_three[index], list_of_forces[index])
+    new_list_of_x = x_distances(new_list_of_time, x_velocity_part_three[index], list_of_forces)
     new_list_of_y = y_distances(new_list_of_time, y_velocity_part_three[index])
     max_distance_part_three.append(round(new_list_of_x[-1], 2))
     max_height_part_three.append(round(max(new_list_of_y), 2))
@@ -158,4 +156,58 @@ Plot the trajectory of these four angles w/ all the other values remaining the s
 Since mass of object is 1kg, just assume force = acceleration
 """
 
-varying_angles = [10, 20, 45, 80]
+varying_degrees = [10, 20, 30, 40]
+varying_angles = []
+for angle in varying_degrees:
+    varying_angles.append(angle * np.pi / 180)
+
+y_velocity_part_three_b = []
+x_velocity_part_three_b = []
+max_height_part_three_b = []
+max_distance_part_three_b = []
+fig_legend_list_three_b = []
+
+
+def time_kinematic_three_b(y_vel_ini, const_acc, iteration_step):
+    return_time = 2 * (-y_vel_ini) / const_acc
+    return_time_list = list(np.arange(0, return_time, iteration_step))
+    return return_time_list
+
+
+def x_distances_three_b(list_of_time, v_initial, force):
+    x_distance_list = []
+    for n in range(len(list_of_time)):
+        x_distance_list.append(v_initial * list_of_time[n] + (1 / 2) * force[n] * list_of_time[n] ** 2)
+    return x_distance_list
+
+
+def y_distances_three_b(list_of_time, v_initial):
+    y_distances_list = []
+    for t in list_of_time:
+        y_distances_list.append(v_initial * t + (1 / 2) * (-9.8) * t ** 2)
+    return y_distances_list
+
+
+for angle in varying_angles:
+    y_velocity_part_three_b.append(initial_velocity * np.sin(angle))
+    x_velocity_part_three_b.append(initial_velocity * np.cos(angle))
+
+for some_num in range(len(varying_angles)):
+    new_list_of_time_three_b = time_kinematic_three_b(y_velocity_part_three_b[some_num], gravity, t_step)
+    new_list_of_x_three_b = x_distances_three_b(new_list_of_time_three_b, x_velocity_part_three_b[some_num],
+                                                list_of_forces)
+    new_list_of_y_three_b = y_distances_three_b(new_list_of_time_three_b, y_velocity_part_three_b[some_num])
+    max_distance_part_three_b.append(round(new_list_of_x_three_b[-1], 2))
+    max_height_part_three_b.append(round(max(new_list_of_y_three_b), 2))
+    plt.plot(new_list_of_x_three_b, new_list_of_y_three_b)
+
+for num in range(len(varying_angles)):
+    fig_legend_list_three_b.append(
+        f'{varying_degrees[num]} degrees results in {max_distance_part_three_b[num]}m max distance and '
+        f'{max_height_part_three_b[num]}m max height')
+
+plt.title("Part Three (b)")
+plt.xlabel("Distance (m)")
+plt.ylabel("Height (m)")
+plt.figlegend(fig_legend_list_three_b)
+plt.show()
