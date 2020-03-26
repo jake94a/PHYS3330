@@ -48,10 +48,13 @@ def rescale(image, resample_x, resample_y):
 
 
 rescale(batman, 2472, 1540)
+plt.title("Question 1")
 plt.show()
 rescale(batman, 154, 96)
+plt.title("Question 2")
 plt.show()
 rescale(batman, 618, 500)
+plt.title("Question 3")
 plt.show()
 
 
