@@ -26,19 +26,19 @@ def read_file(some_txt):
 
 hw_txt = open("hw9_waveform.txt", "r")  # open the text file
 hw9_values = read_file(hw_txt)  # read through the text file and save each line in a list
-time_list = [t for t in range(len(hw9_values))]  # for each in the hw9_values list, save 0:n iterating
 fs = 1500
-ts = 1/fs
+ts = 1 / fs
 length_of_sample = len(hw9_values)
+time_list = [t * ts for t in range(len(hw9_values))]  # for each in the hw9_values list, save 0:n iterating
 
 noisy_function = numpy.fft.fft(hw9_values)
-half_length = int(length_of_sample/2)
+half_length = int(length_of_sample / 2)
 p2 = numpy.abs(noisy_function / length_of_sample)
 p1 = p2[:half_length]
-p1[1:-2] = 2*p1[1:-2]
+p1[1:-2] = 2 * p1[1:-2]
 
-ps_constant = int(fs/length_of_sample)
-power_spec = [ps_constant * index for index in range(half_length)]
+ps_constant = int(fs / length_of_sample)
+power_spec = [(ps_constant * index) / length_of_sample for index in range(half_length)]
 
 # Answers to HW9.3
 a1 = 0.96
@@ -46,8 +46,12 @@ f1 = 32
 a2 = 1.37
 f2 = 67
 
-fixed_noisy_function = numpy.fix([(x/.5).real for x in noisy_function])*.5
-ifft_function = numpy.fft.ifft(fixed_noisy_function)
+fixed_noisy_function = []
+for i in p1:
+    if i > .5:
+        fixed_noisy_function.append(i)
+    else:
+        fixed_noisy_function.append(0)
 
 plt.figure("HW9.1")
 plt.title("HW9.1")
@@ -59,5 +63,5 @@ plt.plot(power_spec, p1)
 
 plt.figure("HW9.4")
 plt.title("HW9.4")
-plt.plot(time_list, ifft_function)
+plt.plot(power_spec, fixed_noisy_function)
 plt.show()
