@@ -1,0 +1,40 @@
+"""
+While working with a 2D MOSFET sensor, you collect the following diffraction pattern...
+
+which you decide looks suspiciously similar to the function:
+LaTeX: f = sin( x ) + cos( y ) 
+defined from x=1:10 and y=1:10.
+3. Use the Pearson correlation coefficient to calculate the similarity between this image 
+    and the function defined above.
+"""
+import numpy
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.stats as sci
+
+
+def rgb2gray(rgb):
+    return numpy.dot(rgb[..., :3], [0.2989, 0.5870, 0.1140])
+
+
+def sin_cos(x, y):
+    return numpy.sin(x) + numpy.cos(y)
+
+
+img = mpimg.imread("exam2_3_img.png")
+img_gray = rgb2gray(img)
+x_values = numpy.linspace(1, 10, img.shape[1])
+y_values = numpy.linspace(1, 10, img.shape[0])
+x_k, y_k = numpy.meshgrid(x_values, y_values)
+
+pearson_coef = sci.pearsonr(sin_cos(x_k, y_k).ravel(), img_gray.ravel())[0]
+
+plt.figure("Exam2, Part 3a")
+plt.title("Original Image")
+plt.imshow(img)
+
+plt.figure("Exam2, Part 3b")
+plt.title(f"Created Image, Pearson Coefficient = {round(pearson_coef, 5)}")
+plt.pcolormesh(x_k, y_k, sin_cos(x_k, y_k), cmap='jet')
+
+plt.show()
