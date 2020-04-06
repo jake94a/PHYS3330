@@ -1,0 +1,45 @@
+"""
+Write a program that minimizes the sum of squared residuals to calculate a line of best fit for these data. 
+Plot both the data and trend line on the same graph. Calculate the R2 value for this function.
+"""
+
+t_j = numpy.array([0.00, 0.27, 0.61, 0.96, 1.24, 1.45, 1.68, 2.03, 2.41, 2.76, 3.12, 3.65])
+y_j = numpy.array([2.16, 2.48, 2.71, 3.02, 3.51, 3.39, 3.79, 4.21, 4.50, 4.86, 5.42, 5.53])
+
+
+def linear_fit(x, y):
+    xbar = numpy.average(x)
+    ybar = numpy.average(y)
+    slope_numerator = 0
+    slope_denom = 0
+    for index in range(len(x)):
+        slope_numerator += (x[index] - xbar) * (y[index] - ybar)
+        slope_denom += (x[index] - xbar) ** 2
+    slope = slope_numerator / slope_denom
+    y_int = ybar - slope * xbar
+    return slope, y_int
+
+
+def r_squared_fnc(x, y):
+    n = len(x)
+    sum_x = numpy.sum(x)
+    sum_y = numpy.sum(y)
+    sum_xy = sum(x * y)
+    sum_x2 = numpy.sum(x ** 2)
+    sum_y2 = numpy.sum(y ** 2)
+    r_squared = 1 - (((n * sum_xy) - (sum_x * sum_y)) / numpy.sqrt(
+        (n * sum_x2 - sum_x ** 2) * (n * sum_y2 - sum_y ** 2))) ** 2
+    return r_squared
+
+
+part2_rsquared = r_squared_fnc(t_j, y_j)
+
+my_slope, my_int = linear_fit(t_j, y_j)
+equation = my_slope * t_j + my_int
+
+plt.figure("Exam 2, Part 2")
+plt.title(f'R Squared is {round(part2_rsquared, 5)}')
+plt.plot(t_j, y_j, 'o', label="Points")
+plt.plot(t_j, equation, label="Linear Fit")
+plt.figlegend()
+plt.show()
