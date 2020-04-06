@@ -11,6 +11,8 @@ int_fnc = Asin(t_1) + Bsin(2 * t_1) ...
 """
 import numpy
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.stats as sci
 
 t_i = [1.11, 1.50, 1.94, 2.21, 2.80, 3.02, 3.63, 4.54, 4.74, 5.07]
 y_i = [4.71, -9.79, -2.21, 3.34, 8.36, 4.25, -9.16, 5.71, 9.60, 6.18]
@@ -31,8 +33,15 @@ fx_list = 0
 for i in range(n):
     fx_list += coef[i] * numpy.sin(x_list * (i + 1))
 
+"""points = list(zip(x_list, fx_list))
+for i in points:
+    if numpy.abs(i[0] - 4) < .001:
+        t_4 = i"""
+
+title_string = f'Part 1: When t~4, y={fx_list[numpy.where(numpy.abs(x_list - 4) < 0.005)]}'
+plt.figure("Exam 2, Part 1")
+plt.title(title_string)
 plt.plot(x_list, fx_list, label="Line of Best Fit or w/e")
 plt.plot(t_i, y_i, 'o', label="Points")
-plt.title("Part 1")
 plt.figlegend()
 plt.show()
