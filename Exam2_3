@@ -38,3 +38,4 @@ plt.title(f"Created Image, Pearson Coefficient = {round(pearson_coef, 5)}")
 plt.pcolormesh(x_k, y_k, sin_cos(x_k, y_k), cmap='jet')
 
 plt.show()
+
