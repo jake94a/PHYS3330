@@ -1,0 +1,38 @@
+"""
+You notice these data exhibit a pseudo-periodic behavior and decide to model them using an interpolating function,
+which can be expressed mathematically as:
+
+LaTeX: f = ∑ C_n sin ( n t )
+
+1. Generate a numerical representation of this interpolating function by solving for the unknown coefficients Cn.
+Create a plot showing both the original data and the interpolating function passing through each point. Provide an
+estimate for the value of y at t = 4.00.
+int_fnc = Asin(t_1) + Bsin(2 * t_1) ...
+"""
+import numpy
+import matplotlib.pyplot as plt
+
+t_i = [1.11, 1.50, 1.94, 2.21, 2.80, 3.02, 3.63, 4.54, 4.74, 5.07]
+y_i = [4.71, -9.79, -2.21, 3.34, 8.36, 4.25, -9.16, 5.71, 9.60, 6.18]
+
+coef_matrix = []
+n = len(t_i)
+for i in t_i:
+    new_list = [numpy.sin(i), numpy.sin(2 * i), numpy.sin(3 * i), numpy.sin(4 * i), numpy.sin(5 * i), numpy.sin(6 * i),
+                numpy.sin(7 * i), numpy.sin(8 * i), numpy.sin(9 * i), numpy.sin(10 * i)]
+    coef_matrix.append(new_list)
+
+inverted_coef_matrix = numpy.linalg.inv(coef_matrix)
+coef = numpy.matmul(inverted_coef_matrix, y_i)
+coef = [float(x) for x in coef]
+
+x_list = numpy.arange(t_i[0], t_i[-1], 0.01)
+fx_list = 0
+for i in range(n):
+    fx_list += coef[i] * numpy.sin(x_list * (i + 1))
+
+plt.plot(x_list, fx_list, label="Line of Best Fit or w/e")
+plt.plot(t_i, y_i, 'o', label="Points")
+plt.title("Part 1")
+plt.figlegend()
+plt.show()
